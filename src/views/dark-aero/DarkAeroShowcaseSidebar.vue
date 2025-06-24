@@ -29,7 +29,7 @@
       </div>
 
       <!-- BLOCO DE CÓDIGO -->
-      <DarkAeroCodeBlock :code="usageCode" language="vue" />
+      <DarkAeroCodeBlock :code="usageCode" language="html" />
     </section>
   </div>
 </template>

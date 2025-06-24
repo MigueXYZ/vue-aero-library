@@ -30,7 +30,7 @@ const sidebarItems = [
     children: [
       { label: 'Balloon',    href: '/dark/balloon'    },
       { label: 'Button',     href: '/dark/button'     },
-      { label: 'Code Block', href: '/dark/code-block' },
+      { label: 'Code Block', href: '/dark/codeblock' },
       { label: 'Sidebar',    href: '/dark/sidebar'    },
       { label: 'Table',      href: '/dark/table'      }
     ]
