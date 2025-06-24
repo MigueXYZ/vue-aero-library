@@ -4,7 +4,7 @@ import path from 'node:path'
 
 export default defineConfig({
   plugins: [vue()],
-  root: 'src',               // App.vue + router + views
+  root: '.',               // App.vue + router + views
   base: '/',                 // '/vue-aero-library/' se for GH Pages
   resolve: { alias: { '@': path.resolve(__dirname, 'src') } },
   build: { outDir: '../docs-dist' }
