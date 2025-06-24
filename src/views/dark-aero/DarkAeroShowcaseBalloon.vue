@@ -24,10 +24,7 @@
       <section class="example">
         <h2>Como usar</h2>
         <p>Toggle simples de tooltip:</p>
-  
-        <!-- usa o componente de code block -->
-        <DarkAeroCodeBlock :code="usageCode" language="html" />
-  
+
         <div class="interactive">
           <DarkAeroButton @click="show = !show" class="trigger-btn">
             {{ show ? 'Ocultar' : 'Mostrar' }} Tooltip
@@ -36,6 +33,7 @@
             Exemplo de tooltip!
           </DarkAeroBalloon>
         </div>
+        <DarkAeroCodeBlock :code="usageCode" language="html" />
       </section>
     </div>
   </template>

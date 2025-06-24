@@ -1,41 +1,40 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import MainPage from '@/views/MainPage.vue';
-import DarkAeroShowcaseButton from '../views/dark-aero/DarkAeroShowcaseButton.vue';
-import DarkAeroShowcaseBalloon from '../views/dark-aero/DarkAeroShowcaseBalloon.vue';
-import DarkAeroShowcaseCodeBlock from '../views/dark-aero/DarkAeroShowcaseCodeBlock.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+
+// Gera um objeto { './DarkAeroShowcaseButton.vue': () => import(...) , ... }
+const darkModules = import.meta.glob('../views/dark-aero/*.vue')
+
+// Mapeia cada arquivo para um objeto { path, name, component }
+const darkChildren = Object.entries(darkModules).map(([filePath, loader]) => {
+  // ex: '../views/dark-aero/DarkAeroShowcaseButton.vue'
+  const fileName = filePath.split('/').pop().replace('.vue', '')  
+  // remove prefix 'DarkAeroShowcase' (ou adapte para o prefixo que você usa)
+  // e deixa tudo em minúsculas para URL
+  const raw = fileName.replace(/^DarkAeroShowcase/, '')  
+  const path = raw.charAt(0).toLowerCase() + raw.slice(1)  // e.g. 'button', 'balloon'
+  const name = fileName                                  // e.g. 'DarkAeroShowcaseButton'
+  return {
+    path,
+    name,
+    component: loader
+  }
+})
 
 const routes = [
   {
     path: '/',
     name: 'MainPage',
-    component: MainPage,
+    component: () => import('@/views/MainPage.vue')
   },
   {
     path: '/dark',
     name: 'DarkAero',
-    children:[
-        {
-          path: 'button',
-          name: 'Dark Aero Button',
-          component: DarkAeroShowcaseButton,
-        },
-        {
-          path: 'balloon',
-          name: 'Dark Aero Balloon',
-          component: DarkAeroShowcaseBalloon,
-        },
-        {
-          path: 'code-block',
-          name: 'Dark Aero Code Block',
-          component: DarkAeroShowcaseCodeBlock,
-        }
-    ]
-  },
-];
+    children: darkChildren
+  }
+]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
-});
+  routes
+})
 
-export default router;
+export default router
