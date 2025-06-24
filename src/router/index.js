@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import MainPage from '@/views/MainPage.vue';
 import DarkAeroShowcaseButton from '../views/dark-aero/DarkAeroShowcaseButton.vue';
 import DarkAeroShowcaseBalloon from '../views/dark-aero/DarkAeroShowcaseBalloon.vue';
-
+import DarkAeroShowcaseCodeBlock from '../views/dark-aero/DarkAeroShowcaseCodeBlock.vue';
 
 const routes = [
   {
@@ -23,6 +23,11 @@ const routes = [
           path: 'balloon',
           name: 'Dark Aero Balloon',
           component: DarkAeroShowcaseBalloon,
+        },
+        {
+          path: 'code-block',
+          name: 'Dark Aero Code Block',
+          component: DarkAeroShowcaseCodeBlock,
         }
     ]
   },
