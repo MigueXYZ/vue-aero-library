@@ -10,7 +10,8 @@ const sidebarItems = [
       { label: 'Balloon', href: '/dark/balloon' },
       { label: 'Button',  href: '/dark/button'  },
       { label: 'Code',    href: '/dark/codeblock' },
-      { label: 'Table',   href: '/dark/table'   }
+      { label: 'Sidebar', href: '/dark/sidebar' },
+      { label: 'Table',   href: '/dark/table'   },
     ]
   }
 ]
