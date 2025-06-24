@@ -8,8 +8,8 @@ const sidebarItems = [
   { label: 'Intro', href: '/' },
   {
     label: 'Dark Aero', children: [
-      { label: 'Button', href: '/dark/button' },
       { label: 'Balloon', href: '/dark/balloon' },
+      { label: 'Button', href: '/dark/button' },
       { label: 'Code Block', href: '/dark/codeblock' },
       { label: 'Table', href: '/dark/table' }
     ]
@@ -43,7 +43,8 @@ onMounted(() => {
 }
 
 .dark-aero-sidebar {
-  flex: 0 0 250px; /* largura fixa */
+  flex: 0 0 250px;
+  /* largura fixa */
   overflow-y: auto;
 }
 
