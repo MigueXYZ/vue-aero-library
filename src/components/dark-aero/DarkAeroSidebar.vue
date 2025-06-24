@@ -1,47 +1,56 @@
 <template>
   <nav
     class="dark-aero-sidebar"
+    :class="{ collapsed }"
     :style="{
-      '--item-color': props.color,
-      '--subitem-color': props.children_color
+      '--item-color'   : color,
+      '--subitem-color': childrenColor,
+      '--glow-color'   : glowColor
     }"
   >
-    <ul>
-      <li v-for="(item, idx) in state.items" :key="idx">
-        <!-- Item de nível 1 sem filhos -->
+    <!-- Botão ☰ / ✕ -->
+    <button class="toggle-btn" @click="collapsed = !collapsed">
+      <span v-if="!collapsed">☰</span>
+      <span v-else>✕</span>
+    </button>
+
+    <ul class="menu">
+      <li v-for="(item,i) in menu" :key="i">
+        <!-- item sem filhos -->
         <router-link
-          v-if="!item.children && item.href"
+          v-if="!item.children"
           :to="item.href"
-          class="item"
+          class="item glow-left"
+          :class="alignClass"
         >
           {{ item.label }}
         </router-link>
 
-        <!-- Item de nível 1 com filhos -->
-        <div v-else class="item" @click="toggle(item)">
+        <!-- item com filhos -->
+        <div
+          v-else
+          class="item glow-left"
+          :class="alignClass"
+          @click="item.open = !item.open"
+        >
           {{ item.label }}
-          <svg
-            v-if="item.children"
-            class="arrow"
-            viewBox="0 0 24 24"
-            :style="{ transform: item.open ? 'rotate(90deg)' : 'rotate(0deg)' }"
-          >
-            <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/>
+          <svg class="arrow" viewBox="0 0 24 24"
+               :style="{ transform: item.open ? 'rotate(90deg)' : '' }">
+            <path d="M9 6l6 6-6 6"
+                  fill="none" stroke="currentColor" stroke-width="2" />
           </svg>
         </div>
 
-        <!-- Sub-itens -->
+        <!-- sub-itens -->
         <transition name="collapse">
           <ul v-if="item.children && item.open" class="sub-list">
-            <li
-              v-for="(child, cIdx) in item.children"
-              :key="cIdx"
-            >
+            <li v-for="(sub,j) in item.children" :key="j">
               <router-link
-                :to="child.href"
-                class="sub-item"
+                :to="sub.href"
+                class="sub-item glow-left"
+                :class="alignClass"
               >
-                {{ child.label }}
+                {{ sub.label }}
               </router-link>
             </li>
           </ul>
@@ -52,119 +61,114 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
-import { RouterLink } from 'vue-router'
+import { reactive, ref, computed } from 'vue'
 
 const props = defineProps({
-  items: {
-    type: Array,
-    required: true,
-    default: () => []
-  },
-  color: {
-    type: String,
-    default: '#ffffff'      // cor dos itens principais
-  },
-  children_color: {
-    type: String,
-    default: '#a0cfff'      // cor dos sub-itens
-  }
+  items          : Array,
+  color          : { type: String, default: '#fff' },
+  childrenColor  : { type: String, default: '#a0cfff' },
+  align          : { type: String, default: 'left',
+                     validator: v => ['left', 'center', 'right'].includes(v) },
+  glowColor      : { type: String, default: 'rgba(0,128,255,.55)' }
 })
 
-const state = reactive({
-  items: props.items.map(i => ({ ...i, open: false }))
-})
-
-function toggle(item) {
-  if (item.children) item.open = !item.open
-}
+const collapsed  = ref(false)                                   // estado sidebar
+const menu       = reactive(props.items.map(i => ({ ...i, open:false })))
+const alignClass = computed(() => `align-${props.align}`)       // classe de alinhamento
 </script>
 
 <style scoped>
-.dark-aero-sidebar {
-  width: 250px;
-  background: rgba(30,30,30,0.5);
+.dark-aero-sidebar{
+  /* medidas */
+  --w-expanded : 250px;
+  --w-collapsed: 40px;
+
+  width : var(--w-expanded);
+  transition: width .3s;
+  background: rgba(30,30,30,.5);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.1),
-    0 4px 12px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,.15);
   border-radius: 8px;
-  padding: 1rem;
-  font-family: 'Source Code Pro', monospace;
+  overflow : hidden;
+  position : relative;
+  padding  : .5rem;
 }
 
-/* Reset da lista */
-.dark-aero-sidebar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* ╭─── BOTÃO ───╮ */
+.toggle-btn{
+  position:absolute;
+  top:8px; right:8px;
+  background:none; border:none;
+  color:#fff; font-size:1.2rem;
+  cursor:pointer; z-index:2;
 }
 
-/* Itens de NÍVEL 1 */
-.dark-aero-sidebar .item {
-  display: flex;
-  justify-content: space-between;
+/* ╭─── ESTADO COLAPSADO ───╮ */
+.dark-aero-sidebar.collapsed{
+  width : var(--w-collapsed);
+  height: var(--w-collapsed);     /* quadrado   */
+  padding: 0;                     /* sem margem */
+  display:flex; align-items:center;
+  justify-content:center;
+}
+.dark-aero-sidebar.collapsed .menu{ display:none }
+
+/* ╭─── MENU ───╮ */
+.menu{ list-style:none; margin:3rem 0 0; padding:0; }
+
+/* itens de 1º nível & sub-itens */
+.item, .sub-item{
+  position: relative;        /* para a barra glow */
+  display  : flex;
   align-items: center;
-  padding: 0.6rem 0.8rem;
-  margin: 0.4rem 0;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.15);
+  padding : .6rem .8rem;
+  margin  : .4rem 0;
+  background: rgba(255,255,255,.05);
   border-radius: 6px;
-  cursor: pointer;
-  color: var(--item-color);
-  text-decoration: none;
-  transition: background 0.3s, box-shadow 0.3s;
+  color  : var(--item-color);
+  text-decoration:none;
+  transition: background .3s, box-shadow .3s, opacity .3s;
 }
-.dark-aero-sidebar .item:hover {
-  background: rgba(255,255,255,0.1);
-  box-shadow: 0 0 8px rgba(0,128,255,0.4);
-}
-
-/* Seta de expand/collapse */
-.dark-aero-sidebar .arrow {
-  width: 1em;
-  height: 1em;
-  color: rgba(255,255,255,0.7);
-  transition: transform 0.3s;
+.sub-item{
+  padding:.4rem .6rem;
+  margin  :.2rem 0 .2rem 1.5rem;
+  color   : var(--subitem-color);
 }
 
-/* Sub-lista */
-.dark-aero-sidebar .sub-list {
-  margin: 0.5rem 0 0.5rem 1.5rem;
-  padding: 0;
+/* Barra de glow individual (lado esquerdo) */
+.item::before, .sub-item::before{
+  content:''; position:absolute;
+  left:0; top:0; bottom:0; width:4px;
+  background: var(--glow-color);
+  border-radius: 6px 0 0 6px;
 }
 
-/* Itens de NÍVEL 2 */
-.dark-aero-sidebar .sub-item {
-  text-align: left;
-  display: block;
-  padding: 0.4rem 0.6rem;
-  margin-bottom: 0.25rem;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 6px;
-  color: var(--subitem-color);
-  text-decoration: none;
-  transition: background 0.3s, box-shadow 0.3s;
-}
-.dark-aero-sidebar .sub-item:hover {
-  background: rgba(255,255,255,0.1);
-  box-shadow: 0 0 6px rgba(0,128,255,0.4);
-  color: #fff;
+/* Hover */
+.item:hover, .sub-item:hover{
+  background: rgba(255,255,255,.1);
+  box-shadow: 0 0 8px var(--glow-color);
+  color:#fff;
 }
 
-/* Animação de expanção/colapso */
-.collapse-enter-from,
-.collapse-leave-to {
-  height: 0; opacity: 0;
+/* Alinhamento de conteúdo */
+.align-left   { justify-content:flex-start; }
+.align-center { justify-content:center;     }
+.align-right  { justify-content:flex-end;   }
+
+/* Seta expandível */
+.arrow{
+  width:1em; height:1em; margin-left:.5rem;
+  color:rgba(255,255,255,.7);
+  transition: transform .3s;
 }
-.collapse-enter-to,
-.collapse-leave-from {
-  height: auto; opacity: 1;
-}
-.collapse-enter-active,
-.collapse-leave-active {
-  transition: height 0.3s ease, opacity 0.3s ease;
+
+/* Sub-lista (sem bullet) */
+.sub-list{ list-style:none; margin:.5rem 0 0; padding:0; }
+
+/* Animação collapse */
+.collapse-enter-from, .collapse-leave-to   { height:0;   opacity:0; }
+.collapse-enter-to  , .collapse-leave-from { height:auto;opacity:1; }
+.collapse-enter-active, .collapse-leave-active{
+  transition: height .3s ease, opacity .3s ease;
 }
 </style>
