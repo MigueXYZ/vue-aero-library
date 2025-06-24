@@ -1,142 +1,109 @@
 <template>
-    <div class="docs-page">
-      <h1>Dark Aero Button – Variantes de Cor e Texto</h1>
-      
-      <section v-for="example in examples" :key="example.title" class="example">
-        <h2>{{ example.title }}</h2>
-        <p>{{ example.description }}</p>
-        
-        <!-- O botão de demonstração -->
+  <div class="docs-page">
+    <h1>Dark Aero Button</h1>
+    <p>Botão com visual glassmorphism, glow configurável e texto customizável.</p>
+
+    <!-- Props -->
+    <section class="example">
+      <h2>Props</h2>
+      <DarkAeroTable
+        :columns="[
+          { key: 'prop',        label: 'Prop'      },
+          { key: 'type',        label: 'Tipo'      },
+          { key: 'defaultVal',  label: 'Default'   },
+          { key: 'description', label: 'Descrição' }
+        ]"
+        :data="[
+          { prop: 'color',      type: 'String',  defaultVal: 'rgba(255,255,255,0.08)', description: 'Cor de fundo e glow inicial' },
+          { prop: 'glowColor',  type: 'String',  defaultVal: 'rgba(255, 255, 255, 0.5)',                   description: 'Cor do glow ao hover'    },
+          { prop: 'textColor',  type: 'String',  defaultVal: 'rgba(255,255,255,0.7)', description: 'Cor do texto interno'     },
+          { prop: 'disabled',   type: 'Boolean', defaultVal: 'false',                description: 'Desabilita o botão'      }
+        ]"
+      />
+    </section>
+
+    <!-- Exemplos -->
+    <section class="example">
+      <h2>Exemplos</h2>
+      <div v-for="ex in examples" :key="ex.title" class="example-block">
+        <h3>{{ ex.title }}</h3>
         <DarkAeroButton
-          :color="example.color"
-          :glowColor="example.glow"
-          :textColor="example.textColor"
-          @click="showClick(example.title)"
+          :color="ex.color"
+          :glowColor="ex.glow"
+          :textColor="ex.textColor"
+          :disabled="ex.disabled || false"
+          @click="showMessage(ex.title)"
         >
-          {{ example.label }}
+          {{ ex.label }}
         </DarkAeroButton>
-        
-        <p v-if="message[example.title]" class="message">
-          {{ message[example.title] }}
-        </p>
-        
-        <!-- O bloco de código correspondente -->
-        <DarkAeroCodeBlock
-          class="code-block"
-          :code="example.code.trim()"
-          language="html"
-        />
-      </section>
-    </div>
-  </template>
-  
-  <script setup>
-  import { reactive, ref } from 'vue'
-  import DarkAeroButton from '@/components/dark-aero/DarkAeroButton.vue'
-  import DarkAeroCodeBlock from '@/components/dark-aero/DarkAeroCodeBlock.vue'
-  
-  const message = reactive({})
-  
-  function showClick(key) {
-    message[key] = `Você clicou no botão “${key}”!`
+        <p v-if="message[ex.title]" class="message">{{ message[ex.title] }}</p>
+        <DarkAeroCodeBlock :code="ex.code.trim()" language="html" />
+      </div>
+    </section>
+  </div>
+</template>
+
+<script setup>
+import { reactive } from 'vue'
+import DarkAeroButton from '@/components/dark-aero/DarkAeroButton.vue'
+import DarkAeroTable from '@/components/dark-aero/DarkAeroTable.vue'
+import DarkAeroCodeBlock from '@/components/dark-aero/DarkAeroCodeBlock.vue'
+
+const message = reactive({})
+
+function showMessage(key) {
+  message[key] = `Você clicou no botão “${key}”!`
+}
+
+const examples = [
+  {
+    title: 'Default',
+    label: 'Default',
+    code: `
+<DarkAeroButton @click="showMessage('Default')">
+  Default
+</DarkAeroButton>
+    `
+  },
+  {
+    title: 'Primary',
+    label: 'Primary',
+    color: 'rgba(0,128,255,0.2)',
+    glow: 'rgba(0,128,255,0.7)',
+    textColor: '#FFD700',
+    code: `
+<DarkAeroButton
+  :color="'rgba(0,128,255,0.2)'"
+  :glowColor="'rgba(0,128,255,0.7)'"
+  :textColor="'#FFD700'"
+  @click="showMessage('Primary')"
+>
+  Primary
+</DarkAeroButton>
+    `
   }
-  
-  const examples = [
-    {
-      title: 'Padrão (Branco)',
-      description: 'Botão com glow sutil branco e texto padrão.',
-      label: 'Default',
-      code: `
-  <DarkAeroButton
-    @click="showClick('Padrão (Branco)')"
-  >
-    Default
-  </DarkAeroButton>
-      `
-    },
-    {
-      title: 'Primária (Azul)',
-      description: 'Botão azul com glow forte e texto amarelo.',
-      label: 'Primary',
-      color: 'rgba(0, 128, 255, 0.2)',
-      glow: 'rgba(0, 128, 255, 0.7)',
-      textColor: '#FFD700',
-      code: `
-  <DarkAeroButton
-    :color="'rgba(0, 128, 255, 0.2)'"
-    :glowColor="'rgba(0, 128, 255, 0.7)'"
-    :textColor="'#FFD700'"
-    @click="showClick('Primária (Azul)')"
-  >
-    Primary
-  </DarkAeroButton>
-      `
-    },
-    {
-      title: 'Sucesso (Verde)',
-      description: 'Botão verde para ações bem-sucedidas com texto branco.',
-      label: 'Success',
-      color: 'rgba(0, 200, 83, 0.2)',
-      glow: 'rgba(0, 200, 83, 0.6)',
-      textColor: 'white',
-      code: `
-  <DarkAeroButton
-    :color="'rgba(0, 200, 83, 0.2)'"
-    :glowColor="'rgba(0, 200, 83, 0.6)'"
-    :textColor="'white'"
-    @click="showClick('Sucesso (Verde)')"
-  >
-    Success
-  </DarkAeroButton>
-      `
-    },
-    {
-      title: 'Perigo (Vermelho)',
-      description: 'Botão vermelho para ações críticas com texto preto.',
-      label: 'Danger',
-      color: 'rgba(255, 0, 0, 0.2)',
-      glow: 'rgba(255, 0, 0, 0.6)',
-      textColor: 'black',
-      code: `
-  <DarkAeroButton
-    :color="'rgba(255, 0, 0, 0.2)'"
-    :glowColor="'rgba(255, 0, 0, 0.6)'"
-    :textColor="'black'"
-    @click="showClick('Perigo (Vermelho)')"
-  >
-    Danger
-  </DarkAeroButton>
-      `
-    }
-  ]
-  </script>
-  
-  <style scoped>
-  .docs-page {
-    padding: 2rem;
-    color: #eee;
-  }
-  
-  .example {
-    margin-bottom: 3rem;
-  }
-  
-  .example h2 {
-    margin-bottom: 0.5rem;
-    color: #fff;
-  }
-  
-  .example p {
-    margin-bottom: 1rem;
-  }
-  
-  .message {
-    margin: 0.5rem 0 1rem;
-    color: #8f8;
-  }
-  
-  .code-block {
-    margin-top: 1rem;
-  }
-  </style>
-  
+  // adicione mais exemplos conforme necessário
+]
+</script>
+
+<style scoped>
+.docs-page {
+  padding: 2rem;
+  color: #eee;
+  font-family: sans-serif;
+}
+.example {
+  margin-bottom: 2rem;
+}
+.example-block {
+  margin-bottom: 1.5rem;
+}
+h3 {
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+.message {
+  margin: 0.5rem 0;
+  color: #8f8;
+}
+</style>

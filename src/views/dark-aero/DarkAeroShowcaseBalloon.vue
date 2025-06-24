@@ -6,25 +6,18 @@
       <!-- Props -->
       <section class="example">
         <h2>Props</h2>
-        <table>
-          <thead>
-            <tr><th>Prop</th><th>Tipo</th><th>Default</th><th>Descrição</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>position</code></td>
-              <td>String</td>
-              <td><code>top-left</code></td>
-              <td>Define onde a ponta do balão aparece (<code>top-left</code> | <code>top-right</code> | <code>bottom-left</code> | <code>bottom-right</code>).</td>
-            </tr>
-            <tr>
-              <td><code>textColor</code></td>
-              <td>String</td>
-              <td><code>#0ff</code></td>
-              <td>Cor do texto dentro do balão (qualquer valor CSS válido).</td>
-            </tr>
-          </tbody>
-        </table>
+        <DarkAeroTable
+          :columns="[
+            { key: 'name',      label: 'Prop'       },
+            { key: 'type',      label: 'Tipo'       },
+            { key: 'default',   label: 'Default'    },
+            { key: 'description', label: 'Descrição' }
+          ]"
+          :data="[
+            { name: 'position',  type: 'String', default: 'top-left',   description: 'onde a ponta aparece (top-left | top-right | bottom-left | bottom-right)' },
+            { name: 'textColor', type: 'String', default: '#0ff',       description: 'cor do texto dentro do balão' }
+          ]"
+        />
       </section>
   
       <!-- Uso -->
@@ -46,16 +39,17 @@
       </section>
     </div>
   </template>
-  
-  <script setup>
-  import { ref } from 'vue'
-  import DarkAeroBalloon from '@/components/dark-aero/DarkAeroBalloon.vue'
-  import DarkAeroCodeBlock from '@/components/dark-aero/DarkAeroCodeBlock.vue'
-  import DarkAeroButton from '@/components/dark-aero/DarkAeroButton.vue'
-  
-  const show = ref(false)
-  
-  const usageCode = `
+
+<script setup>
+import { ref } from 'vue'
+import DarkAeroBalloon from '@/components/dark-aero/DarkAeroBalloon.vue'
+import DarkAeroCodeBlock from '@/components/dark-aero/DarkAeroCodeBlock.vue'
+import DarkAeroButton from '@/components/dark-aero/DarkAeroButton.vue'
+import DarkAeroTable from '@/components/dark-aero/DarkAeroTable.vue'
+
+const show = ref(false)
+
+const usageCode = `
   <template>
     <button @click="show = !show">Toggle</button>
     <DarkAeroBalloon
@@ -74,65 +68,34 @@
   const show = ref(false)
   <\/script>
   `
-  </script>
-  
-  <style scoped>
-  .docs-page {
+</script>
+
+<style scoped>
+.docs-page {
     padding: 2rem;
     color: #eee;
     font-family: sans-serif;
-  }
-  .example {
+}
+
+.example {
     margin-bottom: 2rem;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1rem;
-    background: rgba(30, 30, 30, 0.4);
-    backdrop-filter: blur(12px);
-    border-radius: 8px;
-    overflow: hidden;
-    /* glassmorphism shadow */
-    box-shadow:
-      inset 0 1px 0 rgba(255,255,255,0.05),
-      0 4px 12px rgba(0,0,0,0.4);
 }
 
-  th, td {
-    border: none;
-    padding: 0.75rem 1rem;
-    text-align: left;
-}
-
-/* Header styling */
-th {
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-    font-weight: 500;
-}
-
-/* Row backgrounds */
-tbody tr:nth-child(odd) td {
-    background: rgba(255, 255, 255, 0.02);
-}
-tbody tr:nth-child(even) td {
-    background: rgba(255, 255, 255, 0.01);
-}
-  .trigger-btn {
+.trigger-btn {
     padding: 0.5rem 1rem;
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 4px;
     color: #fff;
     cursor: pointer;
     margin-top: 1rem;
-  }
-  .interactive {
+}
+
+.interactive {
     display: inline-flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
     margin-top: 0.5rem;
-  }
-  </style>
+}
+</style>
