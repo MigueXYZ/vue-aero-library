@@ -14,7 +14,6 @@ A small showcase of **Dark‑Aero** UI components—Button, Balloon/Tooltip, Tab
 * Zero‑config tree‑shakable **ES** & **UMD** bundles
 * Global plugin *or* on‑demand component imports
 * Ships with ready‑made CSS theme (`dist/vue‑aero.css`)
-* Fully typed (TypeScript declaration files)
 
 ---
 
@@ -24,10 +23,7 @@ A small showcase of **Dark‑Aero** UI components—Button, Balloon/Tooltip, Tab
 # npm
 npm install @miguexyz/vue-aero
 
-# pnpm
-yarn add @miguexyz/vue-aero
-# yarn
-yarn add @miguexyz/vue-aero
+#other package managers might work, not tested
 ```
 
 > **Peer deps:** Your project must already have **vue ^3.3+** (and optionally **vue-router ^4** if you use the docs example).
