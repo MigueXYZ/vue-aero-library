@@ -10,7 +10,7 @@ const sidebarItems = [
     label: 'Dark Aero', children: [
       { label: 'Button', href: '/dark/button' },
       { label: 'Balloon', href: '/dark/balloon' },
-      { label: 'Code Block', href: '/dark/code-block' },
+      { label: 'Code Block', href: '/dark/codeblock' },
       { label: 'Table', href: '/dark/table' }
     ]
   }
