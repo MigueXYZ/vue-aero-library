@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import MainPage from '@/views/MainPage.vue';
-import DarkAeroButton from '@/views/dark-aero/DarkAeroShowcaseButton.vue';
 import DarkAeroShowcaseButton from '../views/dark-aero/DarkAeroShowcaseButton.vue';
+import DarkAeroShowcaseBalloon from '../views/dark-aero/DarkAeroShowcaseBalloon.vue';
+
 
 const routes = [
   {
@@ -17,6 +18,11 @@ const routes = [
           path: 'button',
           name: 'Dark Aero Button',
           component: DarkAeroShowcaseButton,
+        },
+        {
+          path: 'balloon',
+          name: 'Dark Aero Balloon',
+          component: DarkAeroShowcaseBalloon,
         }
     ]
   },

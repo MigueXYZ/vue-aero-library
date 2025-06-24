@@ -47,7 +47,7 @@
   .code-block {
     font-family: 'Source Code Pro', monospace;
     margin: 1rem auto;
-    border-radius: 8px;
+    border-radius: 3px;
     overflow: hidden;
     width: 100%;
     max-width: 800px;
@@ -86,7 +86,7 @@
       linear-gradient(to top left,    rgba(255,255,255,0.04), rgba(255,255,255,0.01));
     backdrop-filter: blur(8px);
     border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 4px;
+    border-radius: 3px;
     cursor: pointer;
     transition: background 0.3s, transform 0.2s;
   }
