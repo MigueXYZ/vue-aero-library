@@ -21,7 +21,7 @@ The docs / live demo is automatically deployed to ➡ **<https://vue-aero-librar
 
 ```bash
 # 1) clone
-git clone https://github.com/yourusername/vue-aero-library.git
+git clone https://github.com/MigueXYZ/vue-aero-library.git
 cd vue-aero-library
 
 # 2) install deps
