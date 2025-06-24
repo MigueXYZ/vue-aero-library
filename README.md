@@ -2,7 +2,7 @@
 
 A small showcase of “Dark Aero” UI components (button, balloon / tooltip, table, sidebar, etc.) built with **Vue 3** + **Vite** and decorated with a glassmorphism theme.
 
-The docs / live demo is automatically deployed to ➡ **https://vue-aero-library.netlify.app/**
+The docs / live demo is automatically deployed to ➡ **<https://vue-aero-library.netlify.app/>**
 
 ---
 
