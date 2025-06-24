@@ -26,7 +26,7 @@
           <DarkAeroSidebar :items="demoItems" color="#FFD700" children_color="#00FFAA" />
         </div>
         <!-- Código de exemplo -->
-        <DarkAeroCodeBlock :code="usageCode" language="vue" />
+        <DarkAeroCodeBlock :code="usageCode" language="html" />
       </section>
     </div>
   </template>
@@ -59,7 +59,7 @@
       ]
     }
   ]
-  <\\/script>
+  <\/script>
   
   <template>
     <DarkAeroSidebar
