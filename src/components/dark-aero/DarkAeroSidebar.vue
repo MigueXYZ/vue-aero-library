@@ -1,8 +1,14 @@
 <template>
-  <nav class="dark-aero-sidebar">
+  <nav
+    class="dark-aero-sidebar"
+    :style="{
+      '--item-color': props.color,
+      '--subitem-color': props.children_color
+    }"
+  >
     <ul>
       <li v-for="(item, idx) in state.items" :key="idx">
-        <!-- Se for item sem filhos, link direto -->
+        <!-- Item de nível 1 sem filhos -->
         <router-link
           v-if="!item.children && item.href"
           :to="item.href"
@@ -11,7 +17,7 @@
           {{ item.label }}
         </router-link>
 
-        <!-- Se tiver filhos, botão de expandir -->
+        <!-- Item de nível 1 com filhos -->
         <div v-else class="item" @click="toggle(item)">
           {{ item.label }}
           <svg
@@ -27,8 +33,10 @@
         <!-- Sub-itens -->
         <transition name="collapse">
           <ul v-if="item.children && item.open" class="sub-list">
-            <li v-for="(child, cIdx) in item.children" :key="cIdx">
-              <!-- Aqui usamos child, não item -->
+            <li
+              v-for="(child, cIdx) in item.children"
+              :key="cIdx"
+            >
               <router-link
                 :to="child.href"
                 class="sub-item"
@@ -43,110 +51,120 @@
   </nav>
 </template>
 
-  
-  <script setup>
-  import { reactive } from 'vue'
-  const props = defineProps({
-    items: {
-      type: Array,
-      required: true,
-      default: () => []
-    },
-    color:{
-      type:String,
-      required: false,
-      default: 'white'
-    }
-  })
-  
-  // Make items reactive to track open/collapse state
-  const state = reactive({ items: props.items.map(i => ({ ...i, open: false })) })
-  function toggle(item) {
-    if (item.children) item.open = !item.open
+<script setup>
+import { reactive } from 'vue'
+import { RouterLink } from 'vue-router'
+
+const props = defineProps({
+  items: {
+    type: Array,
+    required: true,
+    default: () => []
+  },
+  color: {
+    type: String,
+    default: '#ffffff'      // cor dos itens principais
+  },
+  children_color: {
+    type: String,
+    default: '#a0cfff'      // cor dos sub-itens
   }
-  </script>
-  
-  <style scoped>
-  .dark-aero-sidebar {
-    width: 250px;
-    background: rgba(30,30,30,0.4);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.15);
-    box-shadow:
-      inset 0 1px 1px rgba(255,255,255,0.1),
-      0 4px 12px rgba(0,0,0,0.4),
-      0 0 8px var(--base-glow, rgba(128,128,128,0.3));
-    border-radius: 6px;
-    padding: 1rem;
-    font-family: 'Source Code Pro', monospace;
-  }
-  .dark-aero-sidebar ul {
-    text-align: left;
-    list-style: none;
-    margin-bottom: .2rem;
-    padding: 0;
-  }
-  .dark-aero-sidebar .item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 0.75rem;
-    margin: 0.5rem 0; /* increased vertical spacing */
-    background: var(--item-bg, rgba(255,255,255,0.03));
-    border: 1px solid var(--item-border, rgba(255,255,255,0.1));
-    color: var(--color,white);
-    text-decoration: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-  }
-  .dark-aero-sidebar .item:hover {
-    background: rgba(255,255,255,0.06);
-    box-shadow: 0 0 8px var(--hover-glow, rgba(0,128,255,0.4));
-  }
-  .dark-aero-sidebar .item span {
-    color: var(--text-color, #fff);
-  }
-  .dark-aero-sidebar .arrow {
-    width: 1em;
-    height: 1em;
-    color: rgba(255,255,255,0.6);
-    transition: transform 0.3s ease;
-  }
-  .dark-aero-sidebar .sub-list {
-    margin: 0.5rem 0 0.5rem 1rem;
-    padding: 0;
-  }
-  .dark-aero-sidebar .sub-list li a {
-    display: block;
-    padding: 0.4rem 0.6rem;
-    margin-bottom: .2rem;
-    background: var(--item-bg, rgba(255,255,255,0.03));
-    border: 1px solid var(--item-border, rgba(255,255,255,0.1));
-    border-radius: 4px;
-    color: var(--link-color, #a0cfff);
-    transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
-    text-decoration: none;
-  }
-  .dark-aero-sidebar .sub-list li a:hover {
-    background: rgba(255,255,255,0.06);
-    box-shadow: 0 0 6px var(--hover-glow, rgba(0,128,255,0.4));
-    color: var(--link-hover, #fff);
-  }
-  /* collapse transition */
-  .collapse-enter-from,
-  .collapse-leave-to {
-    height: 0;
-    opacity: 0;
-  }
-  .collapse-enter-to,
-  .collapse-leave-from {
-    height: auto;
-    opacity: 1;
-  }
-  .collapse-enter-active,
-  .collapse-leave-active {
-    transition: height 0.3s ease, opacity 0.3s ease;
-  }
-  </style>
-  
+})
+
+const state = reactive({
+  items: props.items.map(i => ({ ...i, open: false }))
+})
+
+function toggle(item) {
+  if (item.children) item.open = !item.open
+}
+</script>
+
+<style scoped>
+.dark-aero-sidebar {
+  width: 250px;
+  background: rgba(30,30,30,0.5);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 4px 12px rgba(0,0,0,0.4);
+  border-radius: 8px;
+  padding: 1rem;
+  font-family: 'Source Code Pro', monospace;
+}
+
+/* Reset da lista */
+.dark-aero-sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Itens de NÍVEL 1 */
+.dark-aero-sidebar .item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  margin: 0.4rem 0;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--item-color);
+  text-decoration: none;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.dark-aero-sidebar .item:hover {
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 8px rgba(0,128,255,0.4);
+}
+
+/* Seta de expand/collapse */
+.dark-aero-sidebar .arrow {
+  width: 1em;
+  height: 1em;
+  color: rgba(255,255,255,0.7);
+  transition: transform 0.3s;
+}
+
+/* Sub-lista */
+.dark-aero-sidebar .sub-list {
+  margin: 0.5rem 0 0.5rem 1.5rem;
+  padding: 0;
+}
+
+/* Itens de NÍVEL 2 */
+.dark-aero-sidebar .sub-item {
+  text-align: left;
+  display: block;
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 0.25rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  color: var(--subitem-color);
+  text-decoration: none;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.dark-aero-sidebar .sub-item:hover {
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 6px rgba(0,128,255,0.4);
+  color: #fff;
+}
+
+/* Animação de expanção/colapso */
+.collapse-enter-from,
+.collapse-leave-to {
+  height: 0; opacity: 0;
+}
+.collapse-enter-to,
+.collapse-leave-from {
+  height: auto; opacity: 1;
+}
+.collapse-enter-active,
+.collapse-leave-active {
+  transition: height 0.3s ease, opacity 0.3s ease;
+}
+</style>
