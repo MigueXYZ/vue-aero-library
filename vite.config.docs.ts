@@ -1,11 +1,21 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import path from 'node:path'
+import { fileURLToPath, URL } from 'node:url'
 
 export default defineConfig({
   plugins: [vue()],
-  root: '.',               // App.vue + router + views
-  base: '/',                 // '/vue-aero-library/' se for GH Pages
-  resolve: { alias: { '@': path.resolve(__dirname, 'src') } },
-  build: { outDir: '../docs-dist' }
+  root: '.',                    // index.html na raiz
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  },
+  build: {
+    outDir: 'docs-dist',        // dentro do project root ➜ Netlify publish
+    emptyOutDir: true,
+    rollupOptions: {
+      // Se QUISER marcar vue-router como externo (ex.: docs estáticas):
+      // external: ['vue-router'],
+    }
+  }
 })
