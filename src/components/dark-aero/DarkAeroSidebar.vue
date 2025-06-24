@@ -1,29 +1,48 @@
 <template>
-    <nav class="dark-aero-sidebar">
-      <ul>
-        <li v-for="(item, index) in state.items" :key="index">
-          <div class="item" @click="toggle(item)">
-            <span>{{ item.label }}</span>
-            <svg
-              v-if="item.children"
-              class="arrow"
-              viewBox="0 0 24 24"
-              :style="{ transform: item.open ? 'rotate(90deg)' : 'rotate(0deg)' }"
-            >
-              <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/>
-            </svg>
-          </div>
-          <transition name="collapse">
-            <ul v-if="item.children && item.open" class="sub-list">
-              <li v-for="(child, cIndex) in item.children" :key="cIndex">
-                <a :href="child.href || '#'">{{ child.label }}</a>
-              </li>
-            </ul>
-          </transition>
-        </li>
-      </ul>
-    </nav>
-  </template>
+  <nav class="dark-aero-sidebar">
+    <ul>
+      <li v-for="(item, idx) in state.items" :key="idx">
+        <!-- Se for item sem filhos, link direto -->
+        <router-link
+          v-if="!item.children && item.href"
+          :to="item.href"
+          class="item"
+        >
+          {{ item.label }}
+        </router-link>
+
+        <!-- Se tiver filhos, botão de expandir -->
+        <div v-else class="item" @click="toggle(item)">
+          {{ item.label }}
+          <svg
+            v-if="item.children"
+            class="arrow"
+            viewBox="0 0 24 24"
+            :style="{ transform: item.open ? 'rotate(90deg)' : 'rotate(0deg)' }"
+          >
+            <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <!-- Sub-itens -->
+        <transition name="collapse">
+          <ul v-if="item.children && item.open" class="sub-list">
+            <li v-for="(child, cIdx) in item.children" :key="cIdx">
+              <!-- Aqui usamos child, não item -->
+              <router-link
+                :to="child.href"
+                class="sub-item"
+              >
+                {{ child.label }}
+              </router-link>
+            </li>
+          </ul>
+        </transition>
+      </li>
+    </ul>
+  </nav>
+</template>
+
   
   <script setup>
   import { reactive } from 'vue'
@@ -32,6 +51,11 @@
       type: Array,
       required: true,
       default: () => []
+    },
+    color:{
+      type:String,
+      required: false,
+      default: 'white'
     }
   })
   
@@ -70,6 +94,8 @@
     margin: 0.5rem 0; /* increased vertical spacing */
     background: var(--item-bg, rgba(255,255,255,0.03));
     border: 1px solid var(--item-border, rgba(255,255,255,0.1));
+    color: var(--color,white);
+    text-decoration: none;
     border-radius: 4px;
     cursor: pointer;
     transition: background 0.3s ease, box-shadow 0.3s ease;
