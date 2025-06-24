@@ -1,23 +1,49 @@
 {
-  "name": "vue-aero-library",
-  "private": true,
-  "version": "0.0.4",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+  "name": "@miguexyz/vue-aero",
+  "version": "0.1.0",
+  "description": "Dark-Aero UI components for Vue 3",
+  "keywords": [
+    "vue3",
+    "components",
+    "glassmorphism",
+    "ui",
+    "library"
+  ],
+  "license": "GPL-3.0-only",
+  "homepage": "https://github.com/MigueXYZ/vue-aero-library",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MigueXYZ/vue-aero-library.git"
   },
-  "dependencies": {
-    "@tailwindcss/vite": "^4.1.10",
-    "prismjs": "^1.30.0",
-    "tailwindcss": "^4.1.10",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.1"
+  "private": false,
+  "files": [
+    "dist"
+  ],
+  "main": "dist/vue-aero.umd.js",
+  "module": "dist/vue-aero.es.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-aero.es.js",
+      "require": "./dist/vue-aero.umd.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "vite --config vite.config.docs.ts",
+    "build": "vite build --config vite.config.lib.ts",
+    "preview": "vite preview --config vite.config.lib.ts",
+    "docs:build": "vite build --config vite.config.docs.ts",
+    "docs:preview": "vite preview --config vite.config.docs.ts"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "vue": "^3.3.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.3",
     "vite": "^6.3.5",
-    "webpack-cli": "^6.0.0"
+    "prismjs": "^1.30.0",
+    "@tailwindcss/vite": "^4.1.10"
   }
 }
