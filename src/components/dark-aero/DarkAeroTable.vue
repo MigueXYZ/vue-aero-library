@@ -72,5 +72,13 @@
   .dark-aero-table tbody tr:nth-child(even) td {
     background: rgba(255, 255, 255, 0.01);
   }
+
+  .dark-aero-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(4px);
+    box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.1);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+
   </style>
   
