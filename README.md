@@ -7,6 +7,8 @@ A small showcase of **Dark‑Aero** UI components—Button, Balloon/Tooltip, Tab
 
 **Live docs / playground:** [https://vue-aero-library.netlify.app/](https://vue-aero-library.netlify.app/)
 
+**Feedback:** I'm very open about feedback, being it bugs or changes that I should do to the UI and/or feel of components, please tell me in the Github Issues of the repository, thank you!
+
 ---
 
 ## ✨ Features
@@ -26,7 +28,7 @@ npm install @miguexyz/vue-aero
 # other package managers should work, not tested
 ```
 
-> **Peer deps:** Your project must already have **vue ^3.3+** (and optionally **vue-router ^4** if you use the sidebar component as it uses router-links).
+> **Peer deps:** Your project must already have **vue ^3.3+** (and optionally **vue-router ^4.5.1** if you use the sidebar component as it uses router-links).
 
 ---
 
