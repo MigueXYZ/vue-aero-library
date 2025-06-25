@@ -30,7 +30,7 @@ const props = defineProps({
   padding: 0.75rem 1rem;
   max-width: 240px;
   color: var(--balloon-text);
-  font-family: 'Source Code Pro', monospace;
+  font-family: 'Segoe UI', Arial, sans-serif;
   font-size: 0.9rem;
   background: linear-gradient(
     135deg,

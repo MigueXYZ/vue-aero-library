@@ -72,17 +72,6 @@ import '@miguexyz/vue-aero/style'      // or 'dist/vue-aero.css'
 
 ---
 
-### Optional fonts
-
-Components like **Balloon** expect `Source Code Pro`. Add it to your HTML or bundle:
-
-```html
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&display=swap">
-```
-
----
-
 ## 🛠️ Local development / contributions
 
 ```bash
