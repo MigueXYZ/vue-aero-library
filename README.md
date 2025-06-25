@@ -26,7 +26,7 @@ npm install @miguexyz/vue-aero
 # other package managers should work, not tested
 ```
 
-> **Peer deps:** Your project must already have **vue ^3.3+** (and optionally **vue-router ^4** if you use the docs example).
+> **Peer deps:** Your project must already have **vue ^3.3+** (and optionally **vue-router ^4** if you use the sidebar component as it uses router-links).
 
 ---
 
