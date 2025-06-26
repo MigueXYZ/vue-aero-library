@@ -6,7 +6,9 @@ import 'prismjs/themes/prism-tomorrow.css'  // tema escuro
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css' // estilos para números de linha
 
 
+
 const app = createApp(App);
+
 
 app.use(router);
 
