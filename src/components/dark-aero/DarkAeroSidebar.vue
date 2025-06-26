@@ -20,8 +20,8 @@
         <router-link
           v-if="!item.children"
           :to="item.href"
-          class="item glow-left"
-          :class="alignClass"
+          class="item"
+          :class="[alignClass, glowClass]"
         >
           {{ item.label }}
         </router-link>
@@ -29,15 +29,22 @@
         <!-- item com filhos -->
         <div
           v-else
-          class="item glow-left"
-          :class="alignClass"
+          class="item"
+          :class="[alignClass, glowClass]"
           @click="item.open = !item.open"
         >
           {{ item.label }}
-          <svg class="arrow" viewBox="0 0 24 24"
-               :style="{ transform: item.open ? 'rotate(90deg)' : '' }">
-            <path d="M9 6l6 6-6 6"
-                  fill="none" stroke="currentColor" stroke-width="2" />
+          <svg
+            class="arrow"
+            viewBox="0 0 24 24"
+            :style="{ transform: item.open ? 'rotate(90deg)' : '' }"
+          >
+            <path
+              d="M9 6l6 6-6 6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            />
           </svg>
         </div>
 
@@ -47,8 +54,8 @@
             <li v-for="(sub,j) in item.children" :key="j">
               <router-link
                 :to="sub.href"
-                class="sub-item glow-left"
-                :class="alignClass"
+                class="sub-item"
+                :class="[alignClass, glowClass]"
               >
                 {{ sub.label }}
               </router-link>
@@ -60,115 +67,173 @@
   </nav>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
 
 const props = defineProps({
-  items          : Array,
-  color          : { type: String, default: '#fff' },
-  childrenColor  : { type: String, default: '#a0cfff' },
-  align          : { type: String, default: 'left',
-                     validator: v => ['left', 'center', 'right'].includes(v) },
-  glowColor      : { type: String, default: 'rgba(0,128,255,.55)' }
+  items         : { type: Array, default: () => [] },
+  color         : { type: String, default: '#fff' },
+  childrenColor : { type: String, default: '#a0cfff' },
+  align         : {
+    type: String,
+    default: 'left',
+    validator: (v: string) => ['left', 'center', 'right'].includes(v)
+  },
+  glowColor     : { type: String, default: 'rgba(0,128,255,.55)' },
+  glowSide      : {
+    type: String,
+    default: 'left',
+    validator: (v: string) => ['left', 'right'].includes(v)
+  }
 })
 
-const collapsed  = ref(false)                                   // estado sidebar
-const menu       = reactive(props.items.map(i => ({ ...i, open:false })))
-const alignClass = computed(() => `align-${props.align}`)       // classe de alinhamento
+const collapsed  = ref(false)
+const menu       = reactive(props.items.map(i => ({ ...(i as Record<string, any>), open: false })))
+
+const alignClass = computed(() => `align-${props.align}`)
+const glowClass  = computed(() => `glow-${props.glowSide}`)   // <── NOVO
 </script>
 
 <style scoped>
-.dark-aero-sidebar{
+.dark-aero-sidebar {
   /* medidas */
   --w-expanded : 250px;
   --w-collapsed: 40px;
 
-  width : var(--w-expanded);
-  transition: width .3s;
-  background: rgba(30,30,30,.5);
+  width: var(--w-expanded);
+  transition: width 0.3s;
+  background: rgba(30, 30, 30, 0.5);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
-  overflow : hidden;
-  position : relative;
-  padding  : .5rem;
+  overflow: hidden;
+  position: relative;
+  padding: 0.5rem;
 }
 
-/* ╭─── BOTÃO ───╮ */
-.toggle-btn{
-  position:absolute;
-  top:8px; right:8px;
-  background:none; border:none;
-  color:#fff; font-size:1.2rem;
-  cursor:pointer; z-index:2;
+/* ─── BOTÃO ────────────────────────────────────────────── */
+.toggle-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 2;
 }
 
-/* ╭─── ESTADO COLAPSADO ───╮ */
-.dark-aero-sidebar.collapsed{
-  width : var(--w-collapsed);
-  height: var(--w-collapsed);     /* quadrado   */
-  padding: 0;                     /* sem margem */
-  display:flex; align-items:center;
-  justify-content:center;
+/* ─── ESTADO COLAPSADO ─────────────────────────────────── */
+.dark-aero-sidebar.collapsed {
+  width: var(--w-collapsed);
+  height: var(--w-collapsed);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.dark-aero-sidebar.collapsed .menu{ display:none }
+.dark-aero-sidebar.collapsed .menu {
+  display: none;
+}
 
-/* ╭─── MENU ───╮ */
-.menu{ list-style:none; margin:3rem 0 0; padding:0; }
+/* ─── MENU ─────────────────────────────────────────────── */
+.menu {
+  list-style: none;
+  margin: 3rem 0 0;
+  padding: 0;
+}
 
 /* itens de 1º nível & sub-itens */
-.item, .sub-item{
-  position: relative;        /* para a barra glow */
-  display  : flex;
+.item, .sub-item {
+  position: relative;
+  display: flex;
   align-items: center;
-  padding : .6rem .8rem;
-  margin  : .4rem 0;
-  background: rgba(255,255,255,.05);
+  padding: 0.6rem 0.8rem;
+  margin: 0.4rem 0;
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 6px;
-  color  : var(--item-color);
-  text-decoration:none;
-  transition: background .3s, box-shadow .3s, opacity .3s;
+  color: var(--item-color);
+  text-decoration: none;
+  transition: background 0.3s, box-shadow 0.3s, opacity 0.3s;
 }
-.sub-item{
-  padding:.4rem .6rem;
-  margin  :.2rem 0 .2rem 1.5rem;
-  color   : var(--subitem-color);
+.sub-item {
+  padding: 0.4rem 0.6rem;
+  margin: 0.2rem 0 0.2rem 1.5rem;
+  color: var(--subitem-color);
 }
 
-/* Barra de glow individual (lado esquerdo) */
-.item::before, .sub-item::before{
-  content:''; position:absolute;
-  left:0; top:0; bottom:0; width:4px;
+/* barra de glow (lado dinâmico) */
+.item::before,
+.sub-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
   background: var(--glow-color);
+}
+
+/* glow à esquerda (default) */
+.glow-left::before {
+  left: 0;
   border-radius: 6px 0 0 6px;
 }
 
+/* glow à direita */
+.glow-right::before {
+  right: 0;
+  border-radius: 0 6px 6px 0;
+}
+
 /* Hover */
-.item:hover, .sub-item:hover{
-  background: rgba(255,255,255,.1);
+.item:hover,
+.sub-item:hover {
+  background: rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 8px var(--glow-color);
-  color:#fff;
+  color: #fff;
 }
 
 /* Alinhamento de conteúdo */
-.align-left   { justify-content:flex-start; }
-.align-center { justify-content:center;     }
-.align-right  { justify-content:flex-end;   }
+.align-left {
+  justify-content: flex-start;
+}
+.align-center {
+  justify-content: center;
+}
+.align-right {
+  justify-content: flex-end;
+}
 
 /* Seta expandível */
-.arrow{
-  width:1em; height:1em; margin-left:.5rem;
-  color:rgba(255,255,255,.7);
-  transition: transform .3s;
+.arrow {
+  width: 1em;
+  height: 1em;
+  margin-left: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  transition: transform 0.3s;
 }
 
 /* Sub-lista (sem bullet) */
-.sub-list{ list-style:none; margin:.5rem 0 0; padding:0; }
+.sub-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
 
 /* Animação collapse */
-.collapse-enter-from, .collapse-leave-to   { height:0;   opacity:0; }
-.collapse-enter-to  , .collapse-leave-from { height:auto;opacity:1; }
-.collapse-enter-active, .collapse-leave-active{
-  transition: height .3s ease, opacity .3s ease;
+.collapse-enter-from,
+.collapse-leave-to {
+  height: 0;
+  opacity: 0;
+}
+.collapse-enter-to,
+.collapse-leave-from {
+  height: auto;
+  opacity: 1;
+}
+.collapse-enter-active,
+.collapse-leave-active {
+  transition: height 0.3s ease, opacity 0.3s ease;
 }
 </style>
