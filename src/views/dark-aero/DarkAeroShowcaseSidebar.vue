@@ -2,39 +2,39 @@
   <div class="docs-page">
     <h1>Dark Aero Sidebar</h1>
     <p>
-      Menu lateral no estilo <em>Dark Aero</em>
+      Lateral menu in <em>Dark Aero</em> style.
     </p>
-
 
     <!-- PROPS ------------------------------------------------------------ -->
     <section class="example">
       <h2>Props</h2>
-      <DarkAeroTable :columns="[
-        { key: 'prop', label: 'Prop' },
-        { key: 'type', label: 'Tipo' },
-        { key: 'defaultVal', label: 'Default' },
-        { key: 'description', label: 'Descrição' }
-      ]" :data="sidebarProps" />
+      <DarkAeroTable :columns="columns" :data="sidebarProps" />
     </section>
 
-    <!-- USO -------------------------------------------------------------- -->
+    <!-- USAGE ------------------------------------------------------------- -->
     <section class="example">
-      <h2>Como usar</h2>
-      <p>Exemplo completo com colapso e glow à direita:</p>
+      <h2>Usage</h2>
+      <p>Full example with collapse and glow on the right:</p>
 
-      <!-- DEMO AO VIVO -->
+      <!-- LIVE DEMO -->
       <div class="interactive">
-        <DarkAeroSidebar :items="demoItems" color="#FFD700" childrenColor="#00FFAA" align="left" glowSide="right"
-          glowColor="rgba(255,215,0,.6)" />
+        <DarkAeroSidebar
+          :items="demoItems"
+          color="#FFD700"
+          childrenColor="#00FFAA"
+          align="left"
+          glowSide="right"
+          glowColor="rgba(255,215,0,.6)"
+        />
       </div>
 
-      <!-- BLOCO DE CÓDIGO -->
+      <!-- CODE BLOCK -->
       <DarkAeroCodeBlock :code="usageCode" language="html" />
     </section>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 
 import DarkAeroSidebar from '@/components/dark-aero/DarkAeroSidebar.vue'
@@ -42,48 +42,47 @@ import DarkAeroTable from '@/components/dark-aero/DarkAeroTable.vue'
 import DarkAeroCodeBlock from '@/components/dark-aero/DarkAeroCodeBlock.vue'
 
 /* ------------------------------------------------------------------ */
-/*   Dados da tabela de props                                         */
+/*   Table data                                                       */
 /* ------------------------------------------------------------------ */
+const columns = [
+  { key: 'prop',        label: 'Prop'        },
+  { key: 'type',        label: 'Type'        },
+  { key: 'defaultVal',  label: 'Default'     },
+  { key: 'description', label: 'Description' }
+]
+
 const sidebarProps = [
   {
     prop: 'items', type: 'Array', defaultVal: '[]',
-    description: 'Lista de objetos { label, href?, children? }'
+    description: 'Array of objects { label, href?, children? }'
   },
-
   {
     prop: 'color', type: 'String', defaultVal: '#ffffff',
-    description: 'Cor do texto dos itens principais'
+    description: 'Text color of top‑level items'
   },
-
   {
     prop: 'childrenColor', type: 'String', defaultVal: '#a0cfff',
-    description: 'Cor do texto dos sub-itens'
+    description: 'Text color of sub‑items'
   },
-
   {
     prop: 'align', type: 'String', defaultVal: 'left',
-    description: 'Alinhamento: left | center | right'
+    description: 'Content alignment: left | center | right'
   },
-
   {
     prop: 'glowSide', type: 'String', defaultVal: 'left',
-    description: 'Lado da barra de glow: left | right'
+    description: 'Side of the glow bar: left | right'
   },
-
   {
-    prop: 'glowColor', type: 'String',
-    defaultVal: 'rgba(0,128,255,.55)',
-    description: 'Cor da barra de glow'
+    prop: 'glowColor', type: 'String', defaultVal: 'rgba(0,128,255,.55)',
+    description: 'Glow bar color'
   }
 ]
 
 /* ------------------------------------------------------------------ */
-/*   Código de uso (exibido no <CodeBlock>)                           */
+/*   Usage code string                                                */
 /* ------------------------------------------------------------------ */
 const usageCode = `
 <script setup>
-import DarkAeroSidebar from '@/components/dark-aero/DarkAeroSidebar.vue'
-
 const demoItems = [
   { label: 'Intro', href: '/' },
   {
@@ -110,16 +109,16 @@ const demoItems = [
 `.trim()
 
 /* ------------------------------------------------------------------ */
-/*   Itens para o demo interativo                                     */
+/*   Items for the live demo                                          */
 /* ------------------------------------------------------------------ */
 const demoItems = ref([
   { label: 'Intro', href: '/' },
   {
     label: 'Components',
     children: [
-      { label: 'Button', href: '/dark/button' },
+      { label: 'Button',  href: '/dark/button' },
       { label: 'Balloon', href: '/dark/balloon' },
-      { label: 'Table', href: '/dark/table' }
+      { label: 'Table',   href: '/dark/table'  }
     ]
   }
 ])
@@ -137,7 +136,7 @@ const demoItems = ref([
 }
 
 .example h2 {
-  margin-bottom: .75rem;
+  margin-bottom: 0.75rem;
   color: #fff;
 }
 

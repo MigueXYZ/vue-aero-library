@@ -1,90 +1,99 @@
-<!-- src/views/dark-aero/DarkAeroShowcaseTable.vue -->
 <template>
   <div class="docs-page">
     <h1>Dark Aero Table</h1>
     <p>
-      Tabela genérica em estilo glassmorphism.  
-      É usada para listar props, dados ou qualquer conjunto tabular.
-      Agora aceita <code>textColor</code> e <code>glowColor</code> 🎨
+      Generic table in glassmorphism style. Used to list props, data or any tabular set.
+      It now accepts <code>textColor</code> and <code>glowColor</code> 🎨
     </p>
 
     <!-- PROPS -->
     <section class="example">
       <h2>Props</h2>
-      <DarkAeroTable
-        :columns="[
-          { key:'prop',        label:'Prop'       },
-          { key:'type',        label:'Tipo'       },
-          { key:'defaultVal',  label:'Default'    },
-          { key:'description', label:'Descrição'  }
-        ]"
-        :data="tableProps"
-      />
+      <DarkAeroTable :columns="columns" :data="tableProps" />
     </section>
 
-    <!-- USO BÁSICO -->
+    <!-- BASIC USAGE -->
     <section class="example">
-      <h2>Como usar</h2>
-      <p>Exemplo de tabela com brilho laranja e texto amarelo-pálido:</p>
+      <h2>Usage</h2>
+      <p>Example table with orange glow and pale‑yellow text:</p>
 
       <DarkAeroTable
         :columns="demoCols"
-        :data   ="demoData"
+        :data="demoData"
         text-color="#fffa8b"
         glow-color="rgba(255,99,0,.55)"
       />
 
-      <!-- bloco de código -->
-      <DarkAeroCodeBlock
-        :code="usageCode"
-        language="html"
-      />
+      <!-- code block -->
+      <DarkAeroCodeBlock :code="usageCode" language="html" />
     </section>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
-import DarkAeroTable     from '@/components/dark-aero/DarkAeroTable.vue'
+import DarkAeroTable from '@/components/dark-aero/DarkAeroTable.vue'
 import DarkAeroCodeBlock from '@/components/dark-aero/DarkAeroCodeBlock.vue'
 
-/* ------- DESCRIÇÃO DAS PROPS ------- */
-const tableProps = [
-  { prop:'columns',   type:'Array<{ key:string , label:string }>',
-    defaultVal:'[]',
-    description:'Cabeçalhos da tabela (chave + rótulo)' },
-
-  { prop:'data',      type:'Array<Record<string, any>>',
-    defaultVal:'[]',
-    description:'Linhas da tabela (objetos)' },
-
-  { prop:'textColor', type:'String',
-    defaultVal:'#fff',
-    description:'Cor do texto de todas as células' },
-
-  { prop:'glowColor', type:'String',
-    defaultVal:'rgba(0,0,0,.45)',
-    description:'Cor do brilho (box-shadow) externo e do hover' }
+/* ------------------------------------------------------------------
+ *  Props description
+ * ------------------------------------------------------------------*/
+const columns = [
+  { key: 'prop',        label: 'Prop' },
+  { key: 'type',        label: 'Type' },
+  { key: 'defaultVal',  label: 'Default' },
+  { key: 'description', label: 'Description' }
 ]
 
-/* ------- DEMO INTERATIVO ------- */
+const tableProps = [
+  {
+    prop: 'columns',
+    type: 'Array<{ key: string, label: string }>',
+    defaultVal: '[]',
+    description: 'Table headers (key + label)'
+  },
+  {
+    prop: 'data',
+    type: 'Array<Record<string, any>>',
+    defaultVal: '[]',
+    description: 'Table rows (objects)'
+  },
+  {
+    prop: 'textColor',
+    type: 'String',
+    defaultVal: '#fff',
+    description: 'Text color of all cells'
+  },
+  {
+    prop: 'glowColor',
+    type: 'String',
+    defaultVal: 'rgba(0,0,0,.45)',
+    description: 'External glow (box‑shadow) and hover glow color'
+  }
+]
+
+/* ------------------------------------------------------------------
+ *  Interactive demo
+ * ------------------------------------------------------------------*/
 const demoCols = [
-  { key:'nome',  label:'Nome' },
-  { key:'idade', label:'Idade'}
+  { key: 'name', label: 'Name' },
+  { key: 'age',  label: 'Age' }
 ]
 
 const demoData = ref([
-  { nome:'Alice', idade:30 },
-  { nome:'Bruno', idade:25 }
+  { name: 'Alice', age: 30 },
+  { name: 'Bruno', age: 25 }
 ])
 
-/* ------- SNIPPET PARA O BLOCO DE CÓDIGO ------- */
+/* ------------------------------------------------------------------
+ *  Snippet for the code block
+ * ------------------------------------------------------------------*/
 const usageCode = `<template>
   <DarkAeroTable
-    :columns="[{ key: 'nome', label: 'Nome' },
-               { key: 'idade', label: 'Idade' }]"
-    :data="[{ nome: 'Alice', idade: 30 },
-            { nome: 'Bruno', idade: 25 }]"
+    :columns="[{ key: 'name', label: 'Name' },
+               { key: 'age',  label: 'Age' }]"
+    :data="[{ name: 'Alice', age: 30 },
+            { name: 'Bruno', age: 25 }]"
     text-color="#fffa8b"
     glow-color="rgba(255,99,0,.55)"
   />
@@ -100,5 +109,8 @@ const usageCode = `<template>
 .example {
   margin-bottom: 2.5rem;
 }
-.example h2 { margin-bottom: .75rem; color:#fff }
+.example h2 {
+  margin-bottom: 0.75rem;
+  color: #fff;
+}
 </style>
