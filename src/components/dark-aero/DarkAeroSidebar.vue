@@ -1,13 +1,9 @@
 <template>
-  <nav
-    class="dark-aero-sidebar"
-    :class="{ collapsed }"
-    :style="{
-      '--item-color'   : color,
-      '--subitem-color': childrenColor,
-      '--glow-color'   : glowColor
-    }"
-  >
+  <nav class="dark-aero-sidebar" :class="{ collapsed }" :style="{
+    '--item-color': color,
+    '--subitem-color': childrenColor,
+    '--glow-color': glowColor
+  }">
     <!-- Botão ☰ / ✕ -->
     <button class="toggle-btn" @click="collapsed = !collapsed">
       <span v-if="!collapsed">☰</span>
@@ -15,48 +11,25 @@
     </button>
 
     <ul class="menu">
-      <li v-for="(item,i) in menu" :key="i">
+      <li v-for="(item, i) in menu" :key="i">
         <!-- item sem filhos -->
-        <router-link
-          v-if="!item.children"
-          :to="item.href"
-          class="item"
-          :class="[alignClass, glowClass]"
-        >
+        <router-link v-if="!item.children" :to="item.href" class="item" :class="[alignClass, glowClass]">
           {{ item.label }}
         </router-link>
 
         <!-- item com filhos -->
-        <div
-          v-else
-          class="item"
-          :class="[alignClass, glowClass]"
-          @click="item.open = !item.open"
-        >
+        <div v-else class="item" :class="[alignClass, glowClass]" @click="item.open = !item.open">
           {{ item.label }}
-          <svg
-            class="arrow"
-            viewBox="0 0 24 24"
-            :style="{ transform: item.open ? 'rotate(90deg)' : '' }"
-          >
-            <path
-              d="M9 6l6 6-6 6"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            />
+          <svg class="arrow" viewBox="0 0 24 24" :style="{ transform: item.open ? 'rotate(90deg)' : '' }">
+            <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" />
           </svg>
         </div>
 
         <!-- sub-itens -->
         <transition name="collapse">
           <ul v-if="item.children && item.open" class="sub-list">
-            <li v-for="(sub,j) in item.children" :key="j">
-              <router-link
-                :to="sub.href"
-                class="sub-item"
-                :class="[alignClass, glowClass]"
-              >
+            <li v-for="(sub, j) in item.children" :key="j">
+              <router-link :to="sub.href" class="sub-item" :class="[alignClass, glowClass]">
                 {{ sub.label }}
               </router-link>
             </li>
@@ -71,40 +44,46 @@
 import { reactive, ref, computed } from 'vue'
 
 const props = defineProps({
-  items         : { type: Array, default: () => [] },
-  color         : { type: String, default: '#fff' },
-  childrenColor : { type: String, default: '#a0cfff' },
-  align         : {
+  items: { type: Array, default: () => [] },
+  color: { type: String, default: '#fff' },
+  childrenColor: { type: String, default: '#a0cfff' },
+  align: {
     type: String,
     default: 'left',
     validator: (v: string) => ['left', 'center', 'right'].includes(v)
   },
-  glowColor     : { type: String, default: 'rgba(0,128,255,.55)' },
-  glowSide      : {
+  glowColor: { type: String, default: 'rgba(0,128,255,.55)' },
+  glowSide: {
     type: String,
     default: 'left',
     validator: (v: string) => ['left', 'right'].includes(v)
   }
 })
 
-const collapsed  = ref(false)
-const menu       = reactive(props.items.map(i => ({ ...(i as Record<string, any>), open: false })))
+const collapsed = ref(false)
+const menu = reactive(props.items.map(i => ({ ...(i as Record<string, any>), open: false })))
 
 const alignClass = computed(() => `align-${props.align}`)
-const glowClass  = computed(() => `glow-${props.glowSide}`)   // <── NOVO
+const glowClass = computed(() => `glow-${props.glowSide}`)   // <── NOVO
 </script>
 
 <style scoped>
 .dark-aero-sidebar {
   /* medidas */
-  --w-expanded : 250px;
+  --w-expanded: 250px;
   --w-collapsed: 40px;
 
   width: var(--w-expanded);
   transition: width 0.3s;
-  background: rgba(30, 30, 30, 0.5);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg,
+      rgba(0, 0, 0, 0.15) 0%,
+      rgba(80, 80, 80, 0.15) 80%,
+      rgba(150, 150, 150, 0.15) 100%);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 0 6px rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   overflow: hidden;
   position: relative;
@@ -133,6 +112,7 @@ const glowClass  = computed(() => `glow-${props.glowSide}`)   // <── NOVO
   align-items: center;
   justify-content: center;
 }
+
 .dark-aero-sidebar.collapsed .menu {
   display: none;
 }
@@ -145,18 +125,24 @@ const glowClass  = computed(() => `glow-${props.glowSide}`)   // <── NOVO
 }
 
 /* itens de 1º nível & sub-itens */
-.item, .sub-item {
+.item,
+.sub-item {
   position: relative;
   display: flex;
   align-items: center;
   padding: 0.6rem 0.8rem;
   margin: 0.4rem 0;
-  background: rgba(255, 255, 255, 0.05);
+  background: linear-gradient(0deg,
+      rgba(0, 0, 0, 0.15) 0%,
+      rgba(112, 112, 112, 0.15) 80%,
+      rgba(179, 179, 179, 0.15) 100%);
+
   border-radius: 6px;
   color: var(--item-color);
   text-decoration: none;
   transition: background 0.3s, box-shadow 0.3s, opacity 0.3s;
 }
+
 .sub-item {
   padding: 0.4rem 0.6rem;
   margin: 0.2rem 0 0.2rem 1.5rem;
@@ -198,9 +184,11 @@ const glowClass  = computed(() => `glow-${props.glowSide}`)   // <── NOVO
 .align-left {
   justify-content: flex-start;
 }
+
 .align-center {
   justify-content: center;
 }
+
 .align-right {
   justify-content: flex-end;
 }
@@ -227,11 +215,13 @@ const glowClass  = computed(() => `glow-${props.glowSide}`)   // <── NOVO
   height: 0;
   opacity: 0;
 }
+
 .collapse-enter-to,
 .collapse-leave-from {
   height: auto;
   opacity: 1;
 }
+
 .collapse-enter-active,
 .collapse-leave-active {
   transition: height 0.3s ease, opacity 0.3s ease;
