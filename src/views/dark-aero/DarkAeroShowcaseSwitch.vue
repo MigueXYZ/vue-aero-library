@@ -17,8 +17,10 @@
   
           <DarkAeroSwitch
             v-model="state[ex.title]"
+            :rounded="ex.rounded === undefined ? true : ex.rounded"
             :color="ex.color"
             :glowColor="ex.glow"
+            :offColor="ex.offColor || 'rgba(255,255,255,0.08)'"
             :disabled="ex.disabled || false"
           />
   
@@ -31,85 +33,84 @@
   
   <script setup lang="ts">
   import { reactive } from 'vue'
-  import DarkAeroSwitch     from '@/components/dark-aero/DarkAeroSwitch.vue'
-  import DarkAeroTable      from '@/components/dark-aero/DarkAeroTable.vue'
-  import DarkAeroCodeBlock  from '@/components/dark-aero/DarkAeroCodeBlock.vue'
-  
-  /* ------------------------------------------------------------------
-   *  Table definitions
-   * ----------------------------------------------------------------*/
-  const columns = [
-    { key: 'prop',        label: 'Prop'       },
-    { key: 'type',        label: 'Type'       },
-    { key: 'defaultVal',  label: 'Default'    },
-    { key: 'description', label: 'Description'}
-  ]
-  
-  const switchProps = [
-    {
-      prop        : 'modelValue',
-      type        : 'Boolean',
-      defaultVal  : 'false',
-      description : 'On / off state (bind with v‑model)'
-    },
-    {
-      prop        : 'color',
-      type        : 'String',
-      defaultVal  : 'rgba(255,255,255,0.08)',
-      description : 'Base color of track and thumb'
-    },
-    {
-      prop        : 'glowColor',
-      type        : 'String',
-      defaultVal  : 'rgba(255,255,255,0.5)',
-      description : 'Glow color when switched on'
-    },
-    {
-      prop        : 'offColor',
-      type        : 'String',
-      defaultVal  : 'rgba(255,255,255,0.08)',
-      description : 'Track color when switched off'
-    },
-    {
-      prop        : 'disabled',
-      type        : 'Boolean',
-      defaultVal  : 'false',
-      description : 'Disables interaction'
-    }
-  ]
-  
-  /* ------------------------------------------------------------------
-   *  Reactive demo state
-   * ----------------------------------------------------------------*/
-  const state = reactive({
-    Default  : false,
-    Primary  : false,
-    Disabled : false
-  })
-  
-  /* ------------------------------------------------------------------
-   *  Example definitions
-   * ----------------------------------------------------------------*/
-  const examples = [
-    {
-      title : 'Default',
-      code  : `<AeroSwitch v-model="state.Default" />`
-    },
-    {
-      title : 'Primary',
-      color : 'rgba(0,128,255,0.2)',
-      glow  : 'rgba(0,128,255,0.7)',
-      code  : `<AeroSwitch
-    v-model="state.Primary"
-    :color="'rgba(0,128,255,0.2)'"
-    :glowColor="'rgba(0,128,255,0.7)'" />`
-    },
-    {
-      title   : 'Disabled',
-      disabled: true,
-      code    : `<AeroSwitch v-model="state.Disabled" :disabled="true" />`
-    }
-  ]
+import DarkAeroSwitch     from '@/components/dark-aero/DarkAeroSwitch.vue'
+import DarkAeroTable      from '@/components/dark-aero/DarkAeroTable.vue'
+import DarkAeroCodeBlock  from '@/components/dark-aero/DarkAeroCodeBlock.vue'
+
+const columns = [
+  { key: 'prop',        label: 'Prop'       },
+  { key: 'type',        label: 'Type'       },
+  { key: 'defaultVal',  label: 'Default'    },
+  { key: 'description', label: 'Description'}
+]
+
+const switchProps = [
+  {
+    prop        : 'modelValue',
+    type        : 'Boolean',
+    defaultVal  : 'false',
+    description : 'The ON/OFF state of the switch (two-way bound with v-model)'
+  },
+  {
+    prop        : 'color',
+    type        : 'String',
+    defaultVal  : 'rgba(255,255,255,0.2)',
+    description : 'Base background of the thumb and active track (glass-like)'
+  },
+  {
+    prop        : 'glowColor',
+    type        : 'String',
+    defaultVal  : 'rgba(255,255,255,0.5)',
+    description : 'Soft glow applied when active or hovered'
+  },
+  {
+    prop        : 'offColor',
+    type        : 'String',
+    defaultVal  : 'rgba(255,255,255,0.08)',
+    description : 'Background of the track when the switch is off'
+  },
+  {
+    prop        : 'rounded',
+    type        : 'Boolean',
+    defaultVal  : 'true',
+    description : 'Toggle rounded style for thumb and track'
+  },
+  {
+    prop        : 'disabled',
+    type        : 'Boolean',
+    defaultVal  : 'false',
+    description : 'Disables interaction and reduces opacity'
+  }
+]
+
+const state = reactive({
+  Default  : false,
+  Primary  : false,
+  Disabled : false
+})
+
+const examples = [
+  {
+    title : 'Default',
+    code  : `<DarkAeroSwitch v-model="state.Default" />`
+  },
+  {
+    title : 'Primary',
+    color : 'rgba(0,128,255,0.2)',
+    glow  : 'rgba(0,128,255,0.7)',
+    rounded: false,
+    code  : `<DarkAeroSwitch
+  v-model="state.Primary"
+  :color="'rgba(0,128,255,0.2)'"
+  :rounded="false"
+  :glowColor="'rgba(0,128,255,0.7)'" />`
+  },
+  {
+    title    : 'Disabled',
+    disabled : true,
+    code     : `<DarkAeroSwitch v-model="state.Disabled" :disabled="true" />`
+  }
+]
   </script>
   
   <style scoped>
