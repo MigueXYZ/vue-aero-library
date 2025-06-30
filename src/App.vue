@@ -32,6 +32,7 @@ const sidebarItems = [
       { label: 'Button',     href: '/dark/button'     },
       { label: 'Checkbox',  href: '/dark/checkbox'  },
       { label: 'Code Block', href: '/dark/codeblock' },
+      { label: 'Radio Button' , href:'/dark/radio'},
       { label: 'Sidebar',    href: '/dark/sidebar'    },
       { label: 'Switch ',    href: '/dark/switch'    },
       { label: 'Table',      href: '/dark/table'      },
