@@ -35,7 +35,7 @@ const props = defineProps({
   columns   : { type: Array , required: true , default: () => [] },
   data      : { type: Array , required: true , default: () => [] },
   textColor : { type: String, default: '#fff' },
-  glowColor : { type: String, default: 'rgba(0,0,0,.45)' }  // NOVA PROP
+  glowColor : { type: String, default: 'rgba(0,0,0,.45)' }
 })
 </script>
 
