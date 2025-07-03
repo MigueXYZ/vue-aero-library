@@ -59,7 +59,7 @@ const toggleSort = (key: string) => {
 const sortedData = computed(() => {
   if (!sortKey.value) return props.data
 
-  return [...props.data].sort((a, b) => {
+  return [...props.data].sort((a:any, b:any) => {
     const valA = a[sortKey.value!]
     const valB = b[sortKey.value!]
 
