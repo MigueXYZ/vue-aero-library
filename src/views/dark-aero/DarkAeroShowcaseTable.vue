@@ -5,6 +5,10 @@
       Generic table in glassmorphism style. Used to list props, data or any tabular set.
       It now accepts <code>textColor</code> and <code>glowColor</code> 🎨
     </p>
+    <p>
+      It is now possible to sort the table by clicking on the column headers. The sorting is done in ascending or
+      descending order based on the column type (string or number).
+    </p>
 
     <!-- PROPS -->
     <section class="example">
@@ -17,12 +21,7 @@
       <h2>Usage</h2>
       <p>Example table with orange glow and pale‑yellow text:</p>
 
-      <DarkAeroTable
-        :columns="demoCols"
-        :data="demoData"
-        text-color="#fffa8b"
-        glow-color="rgba(255,99,0,.55)"
-      />
+      <DarkAeroTable :columns="demoCols" :data="demoData" text-color="#fffa8b" glow-color="rgba(255,99,0,.55)" />
 
       <!-- code block -->
       <DarkAeroCodeBlock :code="usageCode" language="html" />
@@ -39,9 +38,9 @@ import DarkAeroCodeBlock from '@/components/dark-aero/DarkAeroCodeBlock.vue'
  *  Props description
  * ------------------------------------------------------------------*/
 const columns = [
-  { key: 'prop',        label: 'Prop' },
-  { key: 'type',        label: 'Type' },
-  { key: 'defaultVal',  label: 'Default' },
+  { key: 'prop', label: 'Prop' },
+  { key: 'type', label: 'Type' },
+  { key: 'defaultVal', label: 'Default' },
   { key: 'description', label: 'Description' }
 ]
 
@@ -77,7 +76,7 @@ const tableProps = [
  * ------------------------------------------------------------------*/
 const demoCols = [
   { key: 'name', label: 'Name' },
-  { key: 'age',  label: 'Age' }
+  { key: 'age', label: 'Age' }
 ]
 
 const demoData = ref([
@@ -106,9 +105,11 @@ const usageCode = `<template>
   color: #eee;
   font-family: sans-serif;
 }
+
 .example {
   margin-bottom: 2.5rem;
 }
+
 .example h2 {
   margin-bottom: 0.75rem;
   color: #fff;
