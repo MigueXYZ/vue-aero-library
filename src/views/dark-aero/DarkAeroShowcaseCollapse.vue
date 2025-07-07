@@ -50,13 +50,13 @@
     {
       prop: 'textColor',
       type: 'String',
-      defaultVal: '',
+      defaultVal: "''",
       description: 'Text color (affects header and content)'
     },
     {
       prop: 'glowColor',
       type: 'String',
-      defaultVal: '',
+      defaultVal: "''",
       description: 'Glow effect color applied to the container'
     }
   ]
@@ -64,8 +64,8 @@
   const examples = [
     {
       title: '',
-      textColor: '#fff',
-      glowColor: 'rgba(255,255,255,0.3)',
+      textColor: '',
+      glowColor: '',
       content: 'This is a basic collapse with default styling.',
       code: `<DarkAeroCollapse>
     <p>This is a basic collapse with default styling.</p>
