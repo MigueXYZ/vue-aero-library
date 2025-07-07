@@ -1,7 +1,17 @@
 <template>
-  <label class="aero-switch" :class="{ disabled }" role="switch" :aria-checked="modelValue.toString()"
-    :style="switchStyle">
-    <input type="checkbox" :checked="modelValue" :disabled="disabled" @change="onChange" />
+  <label
+    class="aero-switch"
+    :class="{ disabled }"
+    role="switch"
+    :aria-checked="modelValue.toString()"
+    :style="switchStyle"
+  >
+    <input
+      type="checkbox"
+      :checked="modelValue"
+      :disabled="disabled"
+      @change="onChange"
+    />
     <span class="track"></span>
     <span class="thumb"></span>
   </label>
@@ -33,12 +43,9 @@ const switchStyle = computed(() => ({
   '--thumb-radius': props.rounded ? '50%' : '3px'
 }))
 
-
 function onChange(e) {
   if (props.disabled) return
   const { checked } = e.target
-  console.log('Rounded:', props.rounded) // deve mostrar true ou false
-
   emit('update:modelValue', checked)
   emit('change', checked)
 }
@@ -54,46 +61,56 @@ function onChange(e) {
   user-select: none;
 }
 
-/* Hide the native checkbox but keep it accessible */
+/* Esconde checkbox nativo */
 .aero-switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
+/* ───── Pista (track) ───── */
 .track {
   position: absolute;
   inset: 0;
-  border-radius: var(--track-radius, 3px);
-  background: linear-gradient(0deg, rgba(0, 0, 0, .15) 0%, rgba(112, 112, 112, .15) 80%, rgba(179, 179, 179, .15) 100%);
-  background-color: var(--off-color);
+  border-radius: var(--track-radius);
+  background: var(--off-color);
   backdrop-filter: blur(12px);
   background-blend-mode: screen;
   box-shadow:
     0 2px 6px rgba(0, 0, 0, 0.2),
     0 0 6px var(--glow-color);
-
-  transition: box-shadow 0.3s ease;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
 }
 
+/* ───── Botão (thumb) ───── */
 .thumb {
   position: absolute;
   top: 3px;
   left: 3px;
   width: 20px;
   height: 20px;
-  border-radius: var(--thumb-radius, 50%);
+  border-radius: var(--thumb-radius);
   background: var(--base-color);
   backdrop-filter: blur(12px);
   box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.2),
     0 2px 6px rgba(0, 0, 0, 0.5),
     0 0 6px var(--glow-color);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s ease;
 }
 
-/* ON state */
-.aero-switch input:checked~.thumb {
+/* ───── ESTADO ON ───── */
+.aero-switch input:checked ~ .track {
+  background: var(--base-color);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    0 6px 14px rgba(0, 0, 0, 0.5),
+    0 0 10px var(--glow-color);
+}
+
+.aero-switch input:checked ~ .thumb {
   transform: translateX(20px);
   box-shadow:
     inset 0 1px 1px rgba(255, 255, 255, 0.25),
@@ -101,26 +118,19 @@ function onChange(e) {
     0 0 10px var(--glow-color);
 }
 
-.aero-switch input:checked~.track {
-  background-color: var(--base-color);
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.25),
-    0 6px 14px rgba(0, 0, 0, 0.5),
-    0 0 10px var(--glow-color);
-}
-
+/* ───── Hover (se não desativado) ───── */
 .aero-switch:hover:not(.disabled) .thumb {
   box-shadow:
     0 2px 8px rgba(0, 0, 0, 0.3),
     0 0 12px var(--glow-color);
 }
 
-
-/* Disabled */
+/* ───── Disabled ───── */
 .aero-switch.disabled,
-.aero-switch input:disabled+.track,
-.aero-switch input:disabled~.thumb {
+.aero-switch input:disabled ~ .track,
+.aero-switch input:disabled ~ .thumb {
   cursor: not-allowed;
+  opacity: 0.4;
   box-shadow: none;
 }
 </style>
