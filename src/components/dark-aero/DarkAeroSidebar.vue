@@ -68,42 +68,46 @@ const glowClass = computed(() => `glow-${props.glowSide}`)   // <── NOVO
 </script>
 
 <style scoped>
+/* ░░ SIDEBAR PRINCIPAL ░░ */
 .dark-aero-sidebar {
-  /* medidas */
   --w-expanded: 250px;
   --w-collapsed: 40px;
 
   width: var(--w-expanded);
   transition: width 0.3s;
+  padding: 0.5rem;
+  border-radius: 8px;
+
   background: linear-gradient(135deg,
-      rgba(0, 0, 0, 0.15) 0%,
-      rgba(80, 80, 80, 0.15) 80%,
-      rgba(150, 150, 150, 0.15) 100%);
+    rgba(0, 0, 0, 0.15),
+    rgba(80, 80, 80, 0.15) 80%,
+    rgba(150, 150, 150, 0.15) 100%);
   backdrop-filter: blur(14px);
+
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.2),
     0 0 6px rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  overflow: hidden;
+
+  overflow-y: auto;
   position: relative;
-  padding: 0.5rem;
+  max-height: 100vh;
 }
 
-/* ─── BOTÃO ────────────────────────────────────────────── */
+/* ░░ BOTÃO TOGGLE (☰ ou ✕) ░░ */
 .toggle-btn {
   position: absolute;
   top: 8px;
   right: 8px;
   background: none;
   border: none;
-  color: #fff;
   font-size: 1.2rem;
+  color: #fff;
   cursor: pointer;
   z-index: 2;
 }
 
-/* ─── ESTADO COLAPSADO ─────────────────────────────────── */
+/* ░░ MODO COLAPSADO ░░ */
 .dark-aero-sidebar.collapsed {
   width: var(--w-collapsed);
   height: var(--w-collapsed);
@@ -117,29 +121,32 @@ const glowClass = computed(() => `glow-${props.glowSide}`)   // <── NOVO
   display: none;
 }
 
-/* ─── MENU ─────────────────────────────────────────────── */
+/* ░░ MENU DE NAVEGAÇÃO ░░ */
 .menu {
   list-style: none;
   margin: 3rem 0 0;
   padding: 0;
 }
 
-/* itens de 1º nível & sub-itens */
+/* ░░ ITENS DE MENU E SUBITENS ░░ */
 .item,
 .sub-item {
   position: relative;
   display: flex;
   align-items: center;
+
   padding: 0.6rem 0.8rem;
   margin: 0.4rem 0;
-  background: linear-gradient(0deg,
-      rgba(0, 0, 0, 0.15) 0%,
-      rgba(112, 112, 112, 0.15) 80%,
-      rgba(179, 179, 179, 0.15) 100%);
 
   border-radius: 6px;
-  color: var(--item-color);
   text-decoration: none;
+  color: var(--item-color);
+
+  background: linear-gradient(0deg,
+    rgba(0, 0, 0, 0.15),
+    rgba(112, 112, 112, 0.15) 80%,
+    rgba(179, 179, 179, 0.15) 100%);
+
   transition: background 0.3s, box-shadow 0.3s, opacity 0.3s;
 }
 
@@ -149,7 +156,7 @@ const glowClass = computed(() => `glow-${props.glowSide}`)   // <── NOVO
   color: var(--subitem-color);
 }
 
-/* barra de glow (lado dinâmico) */
+/* ░░ BARRA DE GLOW ░░ */
 .item::before,
 .sub-item::before {
   content: '';
@@ -160,19 +167,19 @@ const glowClass = computed(() => `glow-${props.glowSide}`)   // <── NOVO
   background: var(--glow-color);
 }
 
-/* glow à esquerda (default) */
+/* Glow à esquerda */
 .glow-left::before {
   left: 0;
   border-radius: 6px 0 0 6px;
 }
 
-/* glow à direita */
+/* Glow à direita */
 .glow-right::before {
   right: 0;
   border-radius: 0 6px 6px 0;
 }
 
-/* Hover */
+/* ░░ HOVER ░░ */
 .item:hover,
 .sub-item:hover {
   background: rgba(255, 255, 255, 0.1);
@@ -180,20 +187,18 @@ const glowClass = computed(() => `glow-${props.glowSide}`)   // <── NOVO
   color: #fff;
 }
 
-/* Alinhamento de conteúdo */
+/* ░░ ALINHAMENTO DO TEXTO ░░ */
 .align-left {
   justify-content: flex-start;
 }
-
 .align-center {
   justify-content: center;
 }
-
 .align-right {
   justify-content: flex-end;
 }
 
-/* Seta expandível */
+/* ░░ ÍCONE DE SETA EXPANSÍVEL ░░ */
 .arrow {
   width: 1em;
   height: 1em;
@@ -202,14 +207,14 @@ const glowClass = computed(() => `glow-${props.glowSide}`)   // <── NOVO
   transition: transform 0.3s;
 }
 
-/* Sub-lista (sem bullet) */
+/* ░░ SUBLISTA DE FILHOS ░░ */
 .sub-list {
   list-style: none;
   margin: 0.5rem 0 0;
   padding: 0;
 }
 
-/* Animação collapse */
+/* ░░ TRANSIÇÃO DE COLAPSAR ░░ */
 .collapse-enter-from,
 .collapse-leave-to {
   height: 0;
@@ -226,4 +231,29 @@ const glowClass = computed(() => `glow-${props.glowSide}`)   // <── NOVO
 .collapse-leave-active {
   transition: height 0.3s ease, opacity 0.3s ease;
 }
+
+/* ░░ TOOLTIP QUANDO COLAPSADO ░░ */
+.dark-aero-sidebar.collapsed .item[title],
+.dark-aero-sidebar.collapsed .sub-item[title] {
+  position: relative;
+}
+
+.dark-aero-sidebar.collapsed .item[title]:hover::after,
+.dark-aero-sidebar.collapsed .sub-item[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  background: rgba(30, 30, 30, 0.9);
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+  z-index: 10;
+  pointer-events: none;
+}
+
 </style>
